@@ -11,3 +11,14 @@ desc 'Compile CoffeeScript to JavaScript'
 task :coffee do
   sh 'coffee -o spec/javascripts/helpers/ -c src/'
 end
+
+desc 'CI coffeescript build'
+task :ci do
+  loop do
+    begin
+      sh 'coffee -o spec/javascripts/helpers/ -c src/'
+    rescue Exception
+
+    end
+  end
+end
