@@ -1,5 +1,7 @@
-(function($){
-  $.fn.insta = function(){
-    target_id = this.attr('id') 
-  };
-})( jQuery );
+(function() {
+  (function($) {
+    return $.fn.insta = function() {
+      return console.log('initialize');
+    };
+  })(jQuery);
+}).call(this);
