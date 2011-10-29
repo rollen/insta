@@ -1,5 +1,6 @@
-describe('Insta', function() {
+describe('insta', function() {
   beforeEach(function () {
+    $('#fixture').remove();
     $('#jasmine_content').append('<div id="fixture"></div>');
     $('#fixture').append('<h1 id="target">This is a title</h1>');
   });
@@ -8,10 +9,20 @@ describe('Insta', function() {
     expect($('#target')).toExist();
   });
 
-  it('should show a textarea when clicked', function() {
+  it('should not have the insta div shown', function(){
+    $('#target').insta();
+    expect($('#insta_target')).toBeHidden();
+  });
+
+  it('should have the insta div shown on clicking the target', function(){
     $('#target').insta();
     $('#target').click();
+    expect($('#insta_target')).toBeVisible();
+  });
 
-    expect($('div #insta_target')).toExist();
+  it('should hide the target on clicking the target', function(){
+    $('#target').insta();
+    $('#target').click();
+    expect($('#target')).toBeHidden();
   });
 });
