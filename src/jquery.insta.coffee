@@ -93,10 +93,10 @@
       this.on_target_clicked()
 
   class RemoteResource
-    constructor:(@path, @resource_name, @param_name) ->
+    constructor:(@path, @resource_name, @param_name, @csrf) ->
 
     send: (payload) ->
-      data = "#{@resource_name}[#{@param_name}]=#{payload}"
+      data = "#{@resource_name}[#{@param_name}]=#{payload}&csrf-token=#{@csrf}"
       options = {
         url: @path,
         type: 'PUT',
@@ -111,7 +111,7 @@
 
     view = new InstaView( target_id, maker.div_id(), maker.description_id(), maker.submit_id(), maker.cancel_id())
 
-    request = new RemoteResource(options['path'], options['resource'], options['param'])
+    request = new RemoteResource(options['path'], options['resource'], options['param'], options['csrf'])
     insta_event_controller = new InstaViewController(view, request)
     insta_event_controller.bind_events()
 )(jQuery)

@@ -105,14 +105,15 @@
       return InstaViewController;
     })();
     RemoteResource = (function() {
-      function RemoteResource(path, resource_name, param_name) {
+      function RemoteResource(path, resource_name, param_name, csrf) {
         this.path = path;
         this.resource_name = resource_name;
         this.param_name = param_name;
+        this.csrf = csrf;
       }
       RemoteResource.prototype.send = function(payload) {
         var data, options;
-        data = "" + this.resource_name + "[" + this.param_name + "]=" + payload;
+        data = "" + this.resource_name + "[" + this.param_name + "]=" + payload + "&csrf-token=" + this.csrf;
         options = {
           url: this.path,
           type: 'PUT',
@@ -131,7 +132,7 @@
       maker = new InstaDivMaker(target_id);
       maker.create_and_append_div_to_target();
       view = new InstaView(target_id, maker.div_id(), maker.description_id(), maker.submit_id(), maker.cancel_id());
-      request = new RemoteResource(options['path'], options['resource'], options['param']);
+      request = new RemoteResource(options['path'], options['resource'], options['param'], options['csrf']);
       insta_event_controller = new InstaViewController(view, request);
       return insta_event_controller.bind_events();
     };

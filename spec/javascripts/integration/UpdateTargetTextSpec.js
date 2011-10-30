@@ -41,10 +41,12 @@ describe('update target', function() {
 
   it('returns success if the params are all valid', function(){
     jasmine.Ajax.useMock();
-    options = {
-      path: '/resources',
+    options = 
+    {
+      path: '/resources/1',
       resource: 'resource',
       param: 'title',
+      csrf: 'thisismytoken'
     }
     $('#target').insta(options); 
     $('#target').click();
@@ -53,6 +55,7 @@ describe('update target', function() {
     $(submit_button_css_selector).click();
 
     request = mostRecentAjaxRequest();
-    console.log('test', request)
+    expect(request.params).toBe('resource[title]=New H1&csrf-token=thisismytoken')
+    console.log(request)
   });
 });
