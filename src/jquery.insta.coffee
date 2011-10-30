@@ -65,7 +65,7 @@
 
 
   class InstaViewController
-    constructor:(@view) ->
+    constructor:(@view, @request) ->
 
     bind_events: ->
       $(@view.target_id_selector()).bind('click', =>
@@ -87,20 +87,31 @@
       @view.toggle()
       description = @view.description_box_text()
       @view.target_text(description)
+      @request.send(description)
 
     on_cancel_button_clicked: ->
       this.on_target_clicked()
-  
-  class InstaResource
-    constructor:(@path) ->
 
-  $.fn.insta = ->
+  class RemoteResource
+    constructor:(@path, @resource_name, @param_name) ->
+
+    send: (payload) ->
+      data = "#{@resource_name}[#{@param_name}]=#{payload}"
+      options = {
+        url: @path,
+        type: 'PUT',
+        data: data
+      }
+      $.ajax(options)
+  
+  $.fn.insta = (options={}) ->
     target_id = new Id(this.attr('id'))
     maker = new InstaDivMaker(target_id)
     maker.create_and_append_div_to_target()
 
     view = new InstaView( target_id, maker.div_id(), maker.description_id(), maker.submit_id(), maker.cancel_id())
-    insta_event_controller = new InstaViewController(view)
-    insta_event_controller.bind_events()
 
+    request = new RemoteResource(options['path'], options['resource'], options['param'])
+    insta_event_controller = new InstaViewController(view, request)
+    insta_event_controller.bind_events()
 )(jQuery)

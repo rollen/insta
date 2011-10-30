@@ -39,16 +39,20 @@ describe('update target', function() {
 
   });
 
-  describe('sends a put request to the server', function(){
-    describe('on success', function(){
-      it('returns success if the params are all valid', function(){
-        options = {
-          path: '/resources',
-          resource: 'resource',
-          param: 'title',
-        }
-        $('#target').insta(options); 
-      });
-    });
+  it('returns success if the params are all valid', function(){
+    jasmine.Ajax.useMock();
+    options = {
+      path: '/resources',
+      resource: 'resource',
+      param: 'title',
+    }
+    $('#target').insta(options); 
+    $('#target').click();
+
+    $(text_box_css_selector).val('New H1');
+    $(submit_button_css_selector).click();
+
+    request = mostRecentAjaxRequest();
+    console.log('test', request)
   });
 });

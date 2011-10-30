@@ -1,7 +1,7 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   (function($) {
-    var Id, InstaDivMaker, InstaResource, InstaView, InstaViewController;
+    var Id, InstaDivMaker, InstaView, InstaViewController, RemoteResource;
     Id = (function() {
       function Id(id) {
         this.id = id;
@@ -74,8 +74,9 @@
       return InstaView;
     })();
     InstaViewController = (function() {
-      function InstaViewController(view) {
+      function InstaViewController(view, request) {
         this.view = view;
+        this.request = request;
       }
       InstaViewController.prototype.bind_events = function() {
         $(this.view.target_id_selector()).bind('click', __bind(function() {
@@ -95,26 +96,43 @@
         var description;
         this.view.toggle();
         description = this.view.description_box_text();
-        return this.view.target_text(description);
+        this.view.target_text(description);
+        return this.request.send(description);
       };
       InstaViewController.prototype.on_cancel_button_clicked = function() {
         return this.on_target_clicked();
       };
       return InstaViewController;
     })();
-    InstaResource = (function() {
-      function InstaResource(path) {
+    RemoteResource = (function() {
+      function RemoteResource(path, resource_name, param_name) {
         this.path = path;
+        this.resource_name = resource_name;
+        this.param_name = param_name;
       }
-      return InstaResource;
+      RemoteResource.prototype.send = function(payload) {
+        var data, options;
+        data = "" + this.resource_name + "[" + this.param_name + "]=" + payload;
+        options = {
+          url: this.path,
+          type: 'PUT',
+          data: data
+        };
+        return $.ajax(options);
+      };
+      return RemoteResource;
     })();
-    return $.fn.insta = function() {
-      var insta_event_controller, maker, target_id, view;
+    return $.fn.insta = function(options) {
+      var insta_event_controller, maker, request, target_id, view;
+      if (options == null) {
+        options = {};
+      }
       target_id = new Id(this.attr('id'));
       maker = new InstaDivMaker(target_id);
       maker.create_and_append_div_to_target();
       view = new InstaView(target_id, maker.div_id(), maker.description_id(), maker.submit_id(), maker.cancel_id());
-      insta_event_controller = new InstaViewController(view);
+      request = new RemoteResource(options['path'], options['resource'], options['param']);
+      insta_event_controller = new InstaViewController(view, request);
       return insta_event_controller.bind_events();
     };
   })(jQuery);
