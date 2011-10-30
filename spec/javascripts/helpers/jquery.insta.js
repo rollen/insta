@@ -1,7 +1,7 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   (function($) {
-    var Id, InstaDivMaker, InstaView, InstaViewController;
+    var Id, InstaDivMaker, InstaResource, InstaView, InstaViewController;
     Id = (function() {
       function Id(id) {
         this.id = id;
@@ -58,12 +58,14 @@
       InstaView.prototype.submit_id_selector = function() {
         return this.submit_id.css_id();
       };
+      InstaView.prototype.cancel_id_selector = function() {
+        return this.cancel_id.css_id();
+      };
       InstaView.prototype.toggle = function() {
         $(this.target_id.css_id()).toggle();
         return $(this.insta_root_div_id.css_id()).toggle();
       };
       InstaView.prototype.description_box_text = function() {
-        console.log($(this.description_id.css_id()));
         return $(this.description_id.css_id()).val();
       };
       InstaView.prototype.target_text = function(string) {
@@ -79,8 +81,11 @@
         $(this.view.target_id_selector()).bind('click', __bind(function() {
           return this.on_target_clicked();
         }, this));
-        return $(this.view.submit_id_selector()).bind('click', __bind(function() {
+        $(this.view.submit_id_selector()).bind('click', __bind(function() {
           return this.on_submit_button_clicked();
+        }, this));
+        return $(this.view.cancel_id_selector()).bind('click', __bind(function() {
+          return this.on_cancel_button_clicked();
         }, this));
       };
       InstaViewController.prototype.on_target_clicked = function() {
@@ -90,10 +95,18 @@
         var description;
         this.view.toggle();
         description = this.view.description_box_text();
-        console.log(description);
         return this.view.target_text(description);
       };
+      InstaViewController.prototype.on_cancel_button_clicked = function() {
+        return this.on_target_clicked();
+      };
       return InstaViewController;
+    })();
+    InstaResource = (function() {
+      function InstaResource(path) {
+        this.path = path;
+      }
+      return InstaResource;
     })();
     return $.fn.insta = function() {
       var insta_event_controller, maker, target_id, view;

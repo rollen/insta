@@ -50,12 +50,14 @@
     submit_id_selector: ->
       @submit_id.css_id()
 
+    cancel_id_selector: ->
+      @cancel_id.css_id()
+
     toggle: ->
       $(@target_id.css_id()).toggle()
       $(@insta_root_div_id.css_id()).toggle()
 
     description_box_text: ->
-      console.log($(@description_id.css_id()))
       $(@description_id.css_id()).val()
 
     target_text: (string) ->
@@ -74,14 +76,23 @@
         this.on_submit_button_clicked()
       )
 
+      $(@view.cancel_id_selector()).bind('click', =>
+        this.on_cancel_button_clicked()
+      )
+
     on_target_clicked: ->
       @view.toggle()
 
     on_submit_button_clicked: ->
       @view.toggle()
       description = @view.description_box_text()
-      console.log(description)
       @view.target_text(description)
+
+    on_cancel_button_clicked: ->
+      this.on_target_clicked()
+  
+  class InstaResource
+    constructor:(@path) ->
 
   $.fn.insta = ->
     target_id = new Id(this.attr('id'))
