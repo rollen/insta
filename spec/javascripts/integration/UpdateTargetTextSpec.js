@@ -40,13 +40,14 @@ describe('update target', function() {
   });
 
   it('returns success if the params are all valid', function(){
+    $('#fixture').append('<meta content="thisismytoken" name="csrf-token" />');
+
     jasmine.Ajax.useMock();
     options = 
     {
       path: '/resources/1',
       resource: 'resource',
       param: 'title',
-      csrf: 'thisismytoken'
     }
     $('#target').insta(options); 
     $('#target').click();

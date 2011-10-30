@@ -105,13 +105,13 @@
       $.ajax(options)
   
   $.fn.insta = (options={}) ->
+    csrf = $('meta[name=csrf-token]').attr('content')
     target_id = new Id(this.attr('id'))
     maker = new InstaDivMaker(target_id)
-    maker.create_and_append_div_to_target()
-
     view = new InstaView( target_id, maker.div_id(), maker.description_id(), maker.submit_id(), maker.cancel_id())
-
-    request = new RemoteResource(options['path'], options['resource'], options['param'], options['csrf'])
+    request = new RemoteResource(options['path'], options['resource'], options['param'], csrf)
     insta_event_controller = new InstaViewController(view, request)
+
+    maker.create_and_append_div_to_target()
     insta_event_controller.bind_events()
 )(jQuery)
