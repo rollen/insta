@@ -64,7 +64,7 @@
       };
       InstaView.prototype.description_box_text = function() {
         console.log($(this.description_id.css_id()));
-        return $(this.description_id.css_id()).text();
+        return $(this.description_id.css_id()).val();
       };
       InstaView.prototype.target_text = function(string) {
         return $(this.target_id.css_id()).text(string);

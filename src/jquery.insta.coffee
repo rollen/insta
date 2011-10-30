@@ -56,7 +56,7 @@
 
     description_box_text: ->
       console.log($(@description_id.css_id()))
-      $(@description_id.css_id()).text()
+      $(@description_id.css_id()).val()
 
     target_text: (string) ->
       $(@target_id.css_id()).text(string)

@@ -13,15 +13,13 @@ describe('update target text', function() {
     $('#target').insta();
 
     $('#target').click();
-
     expect($(text_box_css_selector)).toBeVisible();
-    $(text_box_css_selector).text('New H1');
+    $(text_box_css_selector).val('New H1');
 
     expect($(submit_button_css_selector)).toBeVisible();
     $(submit_button_css_selector).click();
 
     expect($('#insta_target')).toBeHidden();
-
     expect($('#target')).toBeVisible();
     expect($('#target').text()).toBe('New H1');
   });
