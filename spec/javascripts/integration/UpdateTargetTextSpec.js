@@ -59,4 +59,12 @@ describe('update target', function() {
     expect(request.params).toBe('resource[title]=New H1&csrf-token=thisismytoken')
     console.log(request)
   });
+
+  it('should allow the text of the target to be shown in the textarea only on the first click', function(){
+    $('#target').insta();
+    $('#target').click();
+    expect($(text_box_css_selector)).toBeVisible();
+    expect($(text_box_css_selector).text()).toBe('This is a title');
+  
+  });
 });

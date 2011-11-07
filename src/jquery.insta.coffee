@@ -18,7 +18,7 @@
     scaffold: ->
       div_id = this.div_id().to_string()
       """
-      <div id='#{div_id}'>
+      <div id='#{div_id}' class='insta'>
         <textarea type='text' class='insta_description' />
         <input type='button' class='insta_submit' value='Submit'/>
         <input type='button' class='insta_cancel' value='Cancel'/>
@@ -63,6 +63,13 @@
     target_text: (string) ->
       $(@target_id.css_id()).text(string)
 
+    copy_target_text_into_description_text: ->
+      $(@description_id.css_id()).text(this.description_text())
+
+    description_text: ->
+      $(@target_id.css_id()).text()
+
+
 
   class InstaViewController
     constructor:(@view, @request) ->
@@ -79,6 +86,9 @@
       $(@view.cancel_id_selector()).bind('click', =>
         this.on_cancel_button_clicked()
       )
+
+    bind_view: ->
+      @view.copy_target_text_into_description_text()
 
     on_target_clicked: ->
       @view.toggle()
@@ -114,4 +124,5 @@
 
     maker.create_and_append_div_to_target()
     insta_event_controller.bind_events()
+    insta_event_controller.bind_view()
 )(jQuery)

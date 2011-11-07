@@ -25,7 +25,7 @@
       InstaDivMaker.prototype.scaffold = function() {
         var div_id;
         div_id = this.div_id().to_string();
-        return "<div id='" + div_id + "'>\n  <textarea type='text' class='insta_description' />\n  <input type='button' class='insta_submit' value='Submit'/>\n  <input type='button' class='insta_cancel' value='Cancel'/>\n</div>";
+        return "<div id='" + div_id + "' class='insta'>\n  <textarea type='text' class='insta_description' />\n  <input type='button' class='insta_submit' value='Submit'/>\n  <input type='button' class='insta_cancel' value='Cancel'/>\n</div>";
       };
       InstaDivMaker.prototype.div_id = function() {
         return new Id("insta_" + (this.target_id.to_string()));
@@ -71,6 +71,12 @@
       InstaView.prototype.target_text = function(string) {
         return $(this.target_id.css_id()).text(string);
       };
+      InstaView.prototype.copy_target_text_into_description_text = function() {
+        return $(this.description_id.css_id()).text(this.description_text());
+      };
+      InstaView.prototype.description_text = function() {
+        return $(this.target_id.css_id()).text();
+      };
       return InstaView;
     })();
     InstaViewController = (function() {
@@ -88,6 +94,9 @@
         return $(this.view.cancel_id_selector()).bind('click', __bind(function() {
           return this.on_cancel_button_clicked();
         }, this));
+      };
+      InstaViewController.prototype.bind_view = function() {
+        return this.view.copy_target_text_into_description_text();
       };
       InstaViewController.prototype.on_target_clicked = function() {
         return this.view.toggle();
@@ -135,7 +144,8 @@
       request = new RemoteResource(options['path'], options['resource'], options['param'], csrf);
       insta_event_controller = new InstaViewController(view, request);
       maker.create_and_append_div_to_target();
-      return insta_event_controller.bind_events();
+      insta_event_controller.bind_events();
+      return insta_event_controller.bind_view();
     };
   })(jQuery);
 }).call(this);

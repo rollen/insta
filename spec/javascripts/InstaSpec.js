@@ -25,4 +25,10 @@ describe('insta', function() {
     $('#target').click();
     expect($('#target')).toBeHidden();
   });
+
+  it('should allow the text of the target to be shown in the textarea on click', function(){
+    $('#target').insta();
+    $('#target').click();
+  
+  });
 });
