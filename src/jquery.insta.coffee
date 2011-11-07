@@ -9,7 +9,7 @@
       "##{@id}"
 
   class InstaDivMaker
-    constructor:(@target_id) ->
+    constructor:(@target_id, @button_value = 'Submit') ->
 
     create_and_append_div_to_target: ->
       $(@target_id.css_id()).after(this.scaffold())
@@ -20,7 +20,7 @@
       """
       <div id='#{div_id}' class='insta'>
         <textarea type='text' class='insta_description' />
-        <input type='button' class='insta_submit' value='Submit'/>
+        <input type='button' class='insta_submit' value='#{@button_value}'/>
         <input type='button' class='insta_cancel' value='Cancel'/>
       </div>
       """
@@ -117,7 +117,7 @@
   $.fn.insta = (options={}) ->
     csrf = $('meta[name=csrf-token]').attr('content')
     target_id = new Id(this.attr('id'))
-    maker = new InstaDivMaker(target_id)
+    maker = new InstaDivMaker(target_id, options['ok_button'])
     view = new InstaView( target_id, maker.div_id(), maker.description_id(), maker.submit_id(), maker.cancel_id())
     request = new RemoteResource(options['path'], options['resource'], options['param'], csrf)
     insta_event_controller = new InstaViewController(view, request)

@@ -60,6 +60,13 @@ describe('update target', function() {
     console.log(request)
   });
 
+  it('should allow for customizable buttons', function() {
+    options = { ok_button: 'Send' } 
+    $('#target').insta(options); 
+    $('#target').click();
+    expect($(submit_button_css_selector).val()).toBe('Send');
+  });
+
   it('should allow the text of the target to be shown in the textarea only on the first click', function(){
     $('#target').insta();
     $('#target').click();

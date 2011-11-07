@@ -15,8 +15,9 @@
       return Id;
     })();
     InstaDivMaker = (function() {
-      function InstaDivMaker(target_id) {
+      function InstaDivMaker(target_id, button_value) {
         this.target_id = target_id;
+        this.button_value = button_value != null ? button_value : 'Submit';
       }
       InstaDivMaker.prototype.create_and_append_div_to_target = function() {
         $(this.target_id.css_id()).after(this.scaffold());
@@ -25,7 +26,7 @@
       InstaDivMaker.prototype.scaffold = function() {
         var div_id;
         div_id = this.div_id().to_string();
-        return "<div id='" + div_id + "' class='insta'>\n  <textarea type='text' class='insta_description' />\n  <input type='button' class='insta_submit' value='Submit'/>\n  <input type='button' class='insta_cancel' value='Cancel'/>\n</div>";
+        return "<div id='" + div_id + "' class='insta'>\n  <textarea type='text' class='insta_description' />\n  <input type='button' class='insta_submit' value='" + this.button_value + "'/>\n  <input type='button' class='insta_cancel' value='Cancel'/>\n</div>";
       };
       InstaDivMaker.prototype.div_id = function() {
         return new Id("insta_" + (this.target_id.to_string()));
@@ -139,7 +140,7 @@
       }
       csrf = $('meta[name=csrf-token]').attr('content');
       target_id = new Id(this.attr('id'));
-      maker = new InstaDivMaker(target_id);
+      maker = new InstaDivMaker(target_id, options['ok_button']);
       view = new InstaView(target_id, maker.div_id(), maker.description_id(), maker.submit_id(), maker.cancel_id());
       request = new RemoteResource(options['path'], options['resource'], options['param'], csrf);
       insta_event_controller = new InstaViewController(view, request);
